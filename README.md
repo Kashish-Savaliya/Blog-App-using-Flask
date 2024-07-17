@@ -1,7 +1,3 @@
-Sure! Here’s a sample README file for your web application for handling and managing blog posts using Flask:
-
----
-
 # Blog Management Application
 
 ## Description
