@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="content-section rmain">
+    <form method="POST" action="" class="needs-validation" novalidate>
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group rentity">
+            <legend class="border-botton mb-4">Reset Password</legend>
+            <div class="form-group rblock">
+                {{ form.email.label(class="form-control-label rlabel") }}
+                {% if form.email.errors %}
+                {{ form.email(class="form-control form-control-lg is-invalid rinput") }}
+                <div class="invalid-feedback">
+                    {% for error in form.email.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.email(class="form-control form-control-lg rinput") }}
+                {% endif %}
+            </div>
+<!--            </div>-->
+        </fieldset>
+        <div class="form-group btn">
+            {{ form.submit(class="btn btn-outline-info") }}
+        </div>
+    </form>
+</div>
+{% endblock content %}
+<!--</body>-->
+<!--</html>-->

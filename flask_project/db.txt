@@ -1,0 +1,313 @@
+SQLAlchemy:
+
+>>> from flask_blog import app,db,User,Post
+>>> with app.app_context():
+...     db.create_all()
+>>> app.app_context().push()
+>>> db.session.add(user1)
+>>> user2=User(username='abc',email='abc@gmail.com',password='password')
+>>> db.session.add(user2)
+>>> db.session.commit()
+>>> User.query.all()
+[User('kashish', 'kashish@gmail.com', 'default.jpeg'), User('abc', 'abc@gmail.com', 'default.jpeg')]
+>>> User.query.first()
+User('kashish', 'kashish@gmail.com', 'default.jpeg')
+>>> User.query.filter_by(username='kashish').all()
+[User('kashish', 'kashish@gmail.com', 'default.jpeg')]
+>>> user=User.query.filter_by(username='kashish').first()
+>>> user
+User('kashish', 'kashish@gmail.com', 'default.jpeg')
+>>> user.id
+1
+>>> user.posts
+[]
+>>> post_1=Post(title='Blog 1',content='First post content!',user_id=user.id)
+>>> post_2=Post(title='Blog 2',content='Second post content!',user_id=user.id)
+>>> db.session.add(post_1)
+>>> db.session.add(post_2)
+>>> db.session.commit()
+>>> user.posts
+[Post('Blog 1' ,'2023-12-24 12:33:37.857176'), Post('Blog 2' ,'2023-12-24 12:33:37.857176')]
+>>> for post in user.posts:
+...     print(post.title)
+...
+Blog 1
+Blog 2
+>>> post.author
+User('kashish', 'kashish@gmail.com', 'default.jpeg')
+>>> post=Post.query.first()
+>>> post
+Post('Blog 1' ,'2023-12-24 12:33:37.857176')
+>>> post.user_id
+1
+>>>
+>>> db.drop_all()
+>>> db.create_all()
+>>> User.query.all()
+[]
+>>> Post.query.all()
+[]
+
+
+#Pagination
+Microsoft Windows [Version 10.0.19045.3930]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\abc>cd Desktop
+
+C:\Users\abc\Desktop>cd Python
+
+C:\Users\abc\Desktop\Python>cd virtualenv
+
+C:\Users\abc\Desktop\Python\virtualenv>Scripts\activate.bat
+
+(virtualenv) C:\Users\abc\Desktop\Python\virtualenv>python
+Python 3.12.0 (tags/v3.12.0:0fb18b0, Oct  2 2023, 13:03:39) [MSC v.1935 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from flask_blog.models import post
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ModuleNotFoundError: No module named 'flask_blog'
+>>> exit()
+
+(virtualenv) C:\Users\abc\Desktop\Python\virtualenv>cd flask_project
+
+(virtualenv) C:\Users\abc\Desktop\Python\virtualenv\flask_project>python
+Python 3.12.0 (tags/v3.12.0:0fb18b0, Oct  2 2023, 13:03:39) [MSC v.1935 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>> from flask_blog.models import Post
+>>> posts = Post.query.all()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "C:\Users\abc\Desktop\Python\virtualenv\Lib\site-packages\flask_sqlalchemy\model.py", line 23, in __get__
+    cls, session=cls.__fsa__.session()  # type: ignore[arg-type]
+                 ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\abc\Desktop\Python\virtualenv\Lib\site-packages\sqlalchemy\orm\scoping.py", line 221, in __call__
+    sess = self.registry()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\abc\Desktop\Python\virtualenv\Lib\site-packages\sqlalchemy\util\_collections.py", line 640, in __call__
+    key = self.scopefunc()
+          ^^^^^^^^^^^^^^^^
+  File "C:\Users\abc\Desktop\Python\virtualenv\Lib\site-packages\flask_sqlalchemy\session.py", line 111, in _app_ctx_id
+    return id(app_ctx._get_current_object())  # type: ignore[attr-defined]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\abc\Desktop\Python\virtualenv\Lib\site-packages\werkzeug\local.py", line 508, in _get_current_object
+    raise RuntimeError(unbound_message) from None
+RuntimeError: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+>>> with app.app_context()
+  File "<stdin>", line 1
+    with app.app_context()
+                          ^
+SyntaxError: expected ':'
+>>> with app.app_context():
+...     posts = Post.query.all()
+...     for post in posts:
+...             print(post)
+...
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'app' is not defined
+>>> from flask_blog import app
+>>> with app.app_context():
+...     posts = Post.query.all()
+...     for post in posts:
+...             print(post)
+...
+Post('Blog Post ' ,'2024-01-01 16:08:15.151716')
+Post('Blog Post 2' ,'2024-01-01 16:42:48.717417')
+Post('abccd' ,'2024-01-07 05:51:28.608770')
+Post('Lok Sabha nod to bill for OBC quota in local bodies in J&K' ,'2024-02-06 10:35:08.234347')
+Post('Boom in Ramayana-linked spiritual destinations: How Lord Ram is bridging South and North' ,'2024-02-06 10:36:38.813873')
+Post('India’s UPI launches in France, read PM Modi’s congratulatory message' ,'2024-02-06 10:41:11.946843')
+Post('Hackers discuss use of ChatGPT, other AI tools for illegal activities: ' ,'2024-02-06 10:42:04.246555')
+Post('What Apple CEO Tim Cook has to say about AI coming to iPhones in 2024' ,'2024-02-06 10:42:44.811045')
+Post('Shark Tank India 3: Aman Gupta's net worth drops at whopping ' ,'2024-02-06 10:46:22.661405')
+Post('Ritesh Agarwal introduces his own catchphrase in Shark Tank  ' ,'2024-02-06 10:47:57.519142')
+Post('India vs South Africa Live Score U19 World Cup 2024: Whitehead falls as bowlers keep South Africa in check' ,'2024-02-06 10:50:10.461450')
+>>> clear
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'clear' is not defined
+>>> clear()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'clear' is not defined
+>>> with app.app_context.push()
+  File "<stdin>", line 1
+    with app.app_context.push()
+                               ^
+SyntaxError: expected ':'
+>>> with app.app_context.push():
+...     posts = Post.query.paginate()
+...
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'function' object has no attribute 'push'
+>>> app.app_context.push()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'function' object has no attribute 'push'
+>>> posts = Post.query.paginate()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "C:\Users\abc\Desktop\Python\virtualenv\Lib\site-packages\flask_sqlalchemy\model.py", line 23, in __get__
+    cls, session=cls.__fsa__.session()  # type: ignore[arg-type]
+                 ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\abc\Desktop\Python\virtualenv\Lib\site-packages\sqlalchemy\orm\scoping.py", line 221, in __call__
+    sess = self.registry()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\abc\Desktop\Python\virtualenv\Lib\site-packages\sqlalchemy\util\_collections.py", line 640, in __call__
+    key = self.scopefunc()
+          ^^^^^^^^^^^^^^^^
+  File "C:\Users\abc\Desktop\Python\virtualenv\Lib\site-packages\flask_sqlalchemy\session.py", line 111, in _app_ctx_id
+    return id(app_ctx._get_current_object())  # type: ignore[attr-defined]
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\abc\Desktop\Python\virtualenv\Lib\site-packages\werkzeug\local.py", line 508, in _get_current_object
+    raise RuntimeError(unbound_message) from None
+RuntimeError: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+>>> with app.app_context():
+...     posts = Post.query.paginate()
+...
+>>> posts
+<flask_sqlalchemy.pagination.QueryPagination object at 0x000001DCB850FFE0>
+>>> dir(posts)
+['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__iter__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_prepare_page_args', '_query_args', '_query_count', '_query_items', '_query_offset', 'first', 'has_next', 'has_prev', 'items', 'iter_pages', 'last', 'max_per_page', 'next', 'next_num', 'page', 'pages', 'per_page', 'prev', 'prev_num', 'total']
+>>> posts.per_page
+20
+>>> posts.page
+1
+>>> with app.app_context():
+...     for post in posts.items:
+...             print(post)
+...
+Post('Blog Post ' ,'2024-01-01 16:08:15.151716')
+Post('Blog Post 2' ,'2024-01-01 16:42:48.717417')
+Post('abccd' ,'2024-01-07 05:51:28.608770')
+Post('Lok Sabha nod to bill for OBC quota in local bodies in J&K' ,'2024-02-06 10:35:08.234347')
+Post('Boom in Ramayana-linked spiritual destinations: How Lord Ram is bridging South and North' ,'2024-02-06 10:36:38.813873')
+Post('India’s UPI launches in France, read PM Modi’s congratulatory message' ,'2024-02-06 10:41:11.946843')
+Post('Hackers discuss use of ChatGPT, other AI tools for illegal activities: ' ,'2024-02-06 10:42:04.246555')
+Post('What Apple CEO Tim Cook has to say about AI coming to iPhones in 2024' ,'2024-02-06 10:42:44.811045')
+Post('Shark Tank India 3: Aman Gupta's net worth drops at whopping ' ,'2024-02-06 10:46:22.661405')
+Post('Ritesh Agarwal introduces his own catchphrase in Shark Tank  ' ,'2024-02-06 10:47:57.519142')
+Post('India vs South Africa Live Score U19 World Cup 2024: Whitehead falls as bowlers keep South Africa in check' ,'2024-02-06 10:50:10.461450')
+>>> with app.app_context():
+...     posts = Post.query.paginate(page=2)
+...     print(post)
+...
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+  File "C:\Users\abc\Desktop\Python\virtualenv\Lib\site-packages\flask_sqlalchemy\query.py", line 98, in paginate
+    return QueryPagination(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\abc\Desktop\Python\virtualenv\Lib\site-packages\flask_sqlalchemy\pagination.py", line 75, in __init__
+    abort(404)
+  File "C:\Users\abc\Desktop\Python\virtualenv\Lib\site-packages\flask\helpers.py", line 274, in abort
+    current_app.aborter(code, *args, **kwargs)
+  File "C:\Users\abc\Desktop\Python\virtualenv\Lib\site-packages\werkzeug\exceptions.py", line 861, in __call__
+    raise self.mapping[code](*args, **kwargs)
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+>>>     posts = Post.query.paginate(page=1)
+  File "<stdin>", line 1
+    posts = Post.query.paginate(page=1)
+IndentationError: unexpected indent
+>>> with app.app_context():
+...     posts = Post.query.paginate(page=1)
+...     print(post)
+...
+Post('India vs South Africa Live Score U19 World Cup 2024: Whitehead falls as bowlers keep South Africa in check' ,'2024-02-06 10:50:10.461450')
+>>> with app.app_context():
+...     posts = Post.query.paginate(page=2)
+...     print(post)
+...
+Traceback (most recent call last):
+  File "<stdin>", line 2, in <module>
+  File "C:\Users\abc\Desktop\Python\virtualenv\Lib\site-packages\flask_sqlalchemy\query.py", line 98, in paginate
+    return QueryPagination(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\abc\Desktop\Python\virtualenv\Lib\site-packages\flask_sqlalchemy\pagination.py", line 75, in __init__
+    abort(404)
+  File "C:\Users\abc\Desktop\Python\virtualenv\Lib\site-packages\flask\helpers.py", line 274, in abort
+    current_app.aborter(code, *args, **kwargs)
+  File "C:\Users\abc\Desktop\Python\virtualenv\Lib\site-packages\werkzeug\exceptions.py", line 861, in __call__
+    raise self.mapping[code](*args, **kwargs)
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+>>> with app.app_context():
+...     posts = Post.query.paginate(page=1)
+...     for post in posts.items:
+...             print(post)
+...
+Post('Blog Post ' ,'2024-01-01 16:08:15.151716')
+Post('Blog Post 2' ,'2024-01-01 16:42:48.717417')
+Post('abccd' ,'2024-01-07 05:51:28.608770')
+Post('Lok Sabha nod to bill for OBC quota in local bodies in J&K' ,'2024-02-06 10:35:08.234347')
+Post('Boom in Ramayana-linked spiritual destinations: How Lord Ram is bridging South and North' ,'2024-02-06 10:36:38.813873')
+Post('India’s UPI launches in France, read PM Modi’s congratulatory message' ,'2024-02-06 10:41:11.946843')
+Post('Hackers discuss use of ChatGPT, other AI tools for illegal activities: ' ,'2024-02-06 10:42:04.246555')
+Post('What Apple CEO Tim Cook has to say about AI coming to iPhones in 2024' ,'2024-02-06 10:42:44.811045')
+Post('Shark Tank India 3: Aman Gupta's net worth drops at whopping ' ,'2024-02-06 10:46:22.661405')
+Post('Ritesh Agarwal introduces his own catchphrase in Shark Tank  ' ,'2024-02-06 10:47:57.519142')
+Post('India vs South Africa Live Score U19 World Cup 2024: Whitehead falls as bowlers keep South Africa in check' ,'2024-02-06 10:50:10.461450')
+>>> with app.app_context():
+...     posts = Post.query.paginate(per_page=5)
+...     for post in posts.item:
+...             print(post)
+...
+Traceback (most recent call last):
+  File "<stdin>", line 3, in <module>
+AttributeError: 'QueryPagination' object has no attribute 'item'. Did you mean: 'items'?
+>>> with app.app_context():
+...     posts = Post.query.paginate(per_page=5)
+...     for post in posts.items:
+...             print(post)
+...
+Post('Blog Post ' ,'2024-01-01 16:08:15.151716')
+Post('Blog Post 2' ,'2024-01-01 16:42:48.717417')
+Post('abccd' ,'2024-01-07 05:51:28.608770')
+Post('Lok Sabha nod to bill for OBC quota in local bodies in J&K' ,'2024-02-06 10:35:08.234347')
+Post('Boom in Ramayana-linked spiritual destinations: How Lord Ram is bridging South and North' ,'2024-02-06 10:36:38.813873')
+>>> posts.page
+1
+>>> with app.app_context():
+...     posts = Post.query.paginate(per_page=5,page=2)
+...     for post in posts.items:
+...             print(post)
+...
+Post('India’s UPI launches in France, read PM Modi’s congratulatory message' ,'2024-02-06 10:41:11.946843')
+Post('Hackers discuss use of ChatGPT, other AI tools for illegal activities: ' ,'2024-02-06 10:42:04.246555')
+Post('What Apple CEO Tim Cook has to say about AI coming to iPhones in 2024' ,'2024-02-06 10:42:44.811045')
+Post('Shark Tank India 3: Aman Gupta's net worth drops at whopping ' ,'2024-02-06 10:46:22.661405')
+Post('Ritesh Agarwal introduces his own catchphrase in Shark Tank  ' ,'2024-02-06 10:47:57.519142')
+>>> posts.total
+11
+>>> with app.app_context():
+...     for page in post.iter_pages()
+  File "<stdin>", line 2
+    for page in post.iter_pages()
+                                 ^
+SyntaxError: expected ':'
+>>>     for page in post.iter_pages():
+  File "<stdin>", line 1
+    for page in post.iter_pages():
+IndentationError: unexpected indent
+>>> for page in post.iter_pages():
+...     print(page)
+...
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'Post' object has no attribute 'iter_pages'
+>>> for page in posts.iter_pages():
+...     print(page)
+...
+1
+2
+3
+>>>
